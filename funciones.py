@@ -9,7 +9,7 @@ db.crear_tabla(Estudiantes)
 
 def limpiar(ventana):
     ventana.nombre_texto.delete(0,END)
-    ventana.apellido_texto.delete(0,END)
+    ventana.apellidos_texto.delete(0,END)
     ventana.dni_texto.delete(0,END)
     ventana.f_nacimiento_texto.delete(0,END)
     ventana.programa_texto.delete(0,END)
@@ -18,15 +18,16 @@ def limpiar(ventana):
     ventana.nombre_texto.focus()
 
 def nuevo(ventana):
-    name = ventana.nombre_texto.get()
-    apellido = ventana.apellido_texto.get()
-    dni = ventana.dni_texto.get()
-    f_nacimiento = ventana.f_nacimiento_texto.get()
-    programa = ventana.programa_texto.get()
-    correo = ventana.correo_texto.get()
-    celular = ventana.celular_texto.get()
-    name = ventana.nombre_texto.focus()
-    date = {
+    name=ventana.nombre_texto.get()
+    print(name)
+    apellido=ventana.apellidos_texto.get()
+    dni=ventana.dni_texto.get()
+    f_nacimiento=ventana.f_nacimiento_texto.get()
+    programa=ventana.programa_texto.get()
+    correo=ventana.correo_texto.get()
+    celular=ventana.celular_texto.get()
+    ventana.nombre_texto.focus()
+    date = [{
         "Nombre":name,
         "Apellido":apellido,
         'DNI':dni,
@@ -34,21 +35,24 @@ def nuevo(ventana):
         'Programa_de_estudio':programa,
         'Correo_Electronico':correo,
         'celular':celular
-
-    }
-    db.insertarUno('Estudiantes',date)
+    }]
+    print(date)
+    db.insertarVarios('Estudiantes',date)
     showinfo(title='save', message='nuevo registro agregado')
     #nuevo
     id = db.mostrar('Estudiantes', where=f'celular={celular}')[0][0]
     ventana.tabla_datos.insert('',END, text=id, values=(name,apellido,dni,f_nacimiento,programa,correo,celular))
     limpiar(ventana)
-    
+
+def mostrar():
+    return db.mostrar("Estudiantes")
+
 #eliminar 
 def eliminar(ventana):
     elemento_eliminar = ventana.tabla_datos.selection()
     dato = ventana.tabla_datos.item(elemento_eliminar)['text'] #sirve para mostrar el registro seleccionado
     ventana.tabla_datos.delete(elemento_eliminar)
-    db.eliminar('Estudiantes.db',where=f'id= "{dato}"')
+    db.eliminar('Estudiantes',where=f'id= "{dato}"')
     #db.eliminar('Usuarios',where='Nombre="ggh"')
     showwarning(title='Delete', message='registro eliminado')
 
@@ -57,7 +61,7 @@ def actualizar(ventana):
         showerror(title='error', message='que va actualizar si noy nada')
     else:
         nombre = ventana.nombre_texto.get()
-        apellidos = ventana.apellido_texto.get()
+        apellidos = ventana.apellidos_texto.get()
         dni = ventana.dni_texto.get()
         f_nacimiento = ventana.f_nacimiento_texto.get()
         programa = ventana.programa_texto.get()
@@ -74,7 +78,7 @@ def actualizar(ventana):
                 'DNI':dni,
                 'Fecha_de_nacimiento':f_nacimiento,
                 'Programa_de_estudio':programa,
-                'correo':correo,
+                'Correo_Electronico':correo,
                 'Celular':celular
                 }
             ventana.tabla_datos.selection_remove(elemento_actualizar)
@@ -85,11 +89,13 @@ def actualizar(ventana):
             ventana.tabla_datos.selection_remove(elemento_actualizar)
 
         
+        
 def doble_clic(ventana,event):
     elemento_actualizar=ventana.tabla_datos.selection()
     captura_datos = ventana.tabla_datos.item(elemento_actualizar)
     mensaje = askyesno(title='actualizar', message='desde el registro')
     if mensaje == True:
+        # id = captura_datos['values'][0]
         nombre = captura_datos['values'][0]
         apellidos = captura_datos['values'][1]
         dni = captura_datos['values'][2]
@@ -99,11 +105,11 @@ def doble_clic(ventana,event):
         celular = captura_datos['values'][6]
 
         ventana.nombre_texto.insert(0,nombre)
-        ventana.apellido_texto.insert(0,apellidos)
-        ventana.celular_texto.insert(0,dni)
-        ventana.celular_texto.insert(0,f_nacimiento)
-        ventana.celular_texto.insert(0,programa)
-        ventana.celular_texto.insert(0,correo)
+        ventana.apellidos_texto.insert(0,apellidos)
+        ventana.dni_texto.insert(0,dni)
+        ventana.f_nacimiento_texto.insert(0,f_nacimiento)
+        ventana.programa_texto.insert(0,programa)
+        ventana.correo_texto.insert(0,correo)
         ventana.celular_texto.insert(0,celular)
     else:
         showinfo(title='actualizar',message='ningún registro seleccionado para actualizar')

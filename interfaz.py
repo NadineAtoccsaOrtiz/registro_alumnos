@@ -23,7 +23,7 @@ class Interfaz_app(Tk):
         self.cajas_textos=LabelFrame(self,text="Cajas de texto",width=150,height=360,bg=COLOR_FONDO_PRIMARIO,fg="white",font=("arial",12),relief=FLAT,pady=60)
         self.cajas_textos.grid(row=0,column=0,pady=20,padx=20)
         #caja para capturar el nombre
-        self.label_nombre=Label(self.cajas_textos,text="Nombres",bg=COLOR_FONDO_PRIMARIO,fg="white",font=("Roboto",10)).pack(pady=10)
+        self.label_nombre=Label(self.cajas_textos,text="Nombre",bg=COLOR_FONDO_PRIMARIO,fg="white",font=("Roboto",10)).pack(pady=10)
         self.nombre_texto=Entry(self.cajas_textos,bd=0,width=12,font=("Arial",14))
         self.nombre_texto.pack()
         #caja para capturar el apellido
@@ -35,17 +35,17 @@ class Interfaz_app(Tk):
         self.dni_texto=Entry(self.cajas_textos,bd=0,width=12,font=("Arial",14))
         self.dni_texto.pack()
         #caja para capturar el nombre
-        self.label_dni=Label(self.cajas_textos,text="Fecha de Nacimiento",bg=COLOR_FONDO_PRIMARIO,fg="white",font=("Roboto",10)).pack(pady=10)
-        self.dni_texto=Entry(self.cajas_textos,bd=0,width=12,font=("Arial",14))
-        self.dni_texto.pack()
-        #caja para capturar el nombre
-        self.label_f_naci=Label(self.cajas_textos,text="Programa de estudios",bg=COLOR_FONDO_PRIMARIO,fg="white",font=("Roboto",10)).pack(pady=10)
+        self.label_f_nacimiento=Label(self.cajas_textos,text="Fecha de Nacimiento",bg=COLOR_FONDO_PRIMARIO,fg="white",font=("Roboto",10)).pack(pady=10)
         self.f_nacimiento_texto=Entry(self.cajas_textos,bd=0,width=12,font=("Arial",14))
         self.f_nacimiento_texto.pack()
         #caja para capturar el nombre
-        self.label_programa=Label(self.cajas_textos,text="Correo Electronico",bg=COLOR_FONDO_PRIMARIO,fg="white",font=("Roboto",10)).pack(pady=10)
+        self.label_f_naci=Label(self.cajas_textos,text="Programa de estudios",bg=COLOR_FONDO_PRIMARIO,fg="white",font=("Roboto",10)).pack(pady=10)
         self.programa_texto=Entry(self.cajas_textos,bd=0,width=12,font=("Arial",14))
         self.programa_texto.pack()
+        #caja para capturar el nombre
+        self.label_correo=Label(self.cajas_textos,text="Correo Electronico",bg=COLOR_FONDO_PRIMARIO,fg="white",font=("Roboto",10)).pack(pady=10)
+        self.correo_texto=Entry(self.cajas_textos,bd=0,width=12,font=("Arial",14))
+        self.correo_texto.pack()
         #caja para celular
         self.label_celular=Label(self.cajas_textos,text="Celular",bg=COLOR_FONDO_PRIMARIO,fg="white",font=("Roboto",10)).pack(pady=10)
         self.celular_texto=Entry(self.cajas_textos,bd=0,width=12,font=("Arial",14))
@@ -71,30 +71,34 @@ class Interfaz_app(Tk):
 
         #tabla
         self.tabla_datos=ttk.Treeview(self.caja_datos,columns=("#0","#1","#2","#3","#4","#5","#6"))
+        
         self.tabla_datos.column("#0",width=40)
-        self.tabla_datos.column("#1",width=120)
-        self.tabla_datos.column("#2",width=40)
-        self.tabla_datos.column("#3",width=150)
+        self.tabla_datos.column("#1",width=40)
+        self.tabla_datos.column("#2",width=120)
+        self.tabla_datos.column("#3",width=40)
         self.tabla_datos.column("#4",width=150)
-        self.tabla_datos.column("#5",width=140)
-        self.tabla_datos.column("#6",width=40)
+        self.tabla_datos.column("#5",width=150)
+        self.tabla_datos.column("#6",width=140)
+        self.tabla_datos.column("#7",width=40)
+
+        self.tabla_datos.heading("#0",text="id")
+        self.tabla_datos.heading("#1",text="Nombre")
+        self.tabla_datos.heading("#2",text="Apellidos")
+        self.tabla_datos.heading("#3",text="DNI")
+        self.tabla_datos.heading("#4",text="Fecha de Nacimiento")
+        self.tabla_datos.heading("#5",text="Programa de Estudios")
+        self.tabla_datos.heading("#6",text="Correo Electronico")
+        self.tabla_datos.heading("#7",text="Celular")
         
-        self.tabla_datos.heading("#0",text="Nombres")
-        self.tabla_datos.heading("#1",text="Apellidos")
-        self.tabla_datos.heading("#2",text="DNI")
-        self.tabla_datos.heading("#3",text="Fecha de Nacimiento")
-        self.tabla_datos.heading("#4",text="Programa de Estudios")
-        self.tabla_datos.heading("#5",text="Correo Electronico")
-        self.tabla_datos.heading("#6",text="Celular")
         
         
-        
-        alumnitos=db.mostrar('Estudiantes')
-        for id,nom,ape,cel in alumnitos:
-            self.tabla_datos.insert("",END,text=nom,values=(ape,cel))
-        print(alumnitos)
-        self.tabla_datos.bind("<Double-1>",lambda event:dobleClick(self,event))
-        self.tabla_datos.place(x=0,y=0,width=400,height=600)
+        alumnitos=mostrar()
+
+        for id,nom,ape,dni,fecha,pro,co,cel in alumnitos:
+            self.tabla_datos.insert("",END,text=id,values=(nom,ape,dni,fecha,pro,co,cel))
+        self.tabla_datos.bind("<Double-1>",lambda event:doble_clic(self,event))
+        self.tabla_datos.place(x=0,y=0,width=1000,height=600)
         #FIN DE TABLA DE DATOS
+
         
         
