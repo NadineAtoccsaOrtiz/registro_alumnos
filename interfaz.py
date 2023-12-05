@@ -3,7 +3,7 @@ from tkinter import ttk
 from config import *
 from funciones import *
 
-class InterfazApp(Tk):
+class Interfaz_app(Tk):
     def __init__(self):
         super().__init__()
         self.configurar_ventana()
@@ -15,7 +15,7 @@ class InterfazApp(Tk):
         self.configure(bg=COLOR_FONDO_PRIMARIO)
         self.resizable(0,0)
         self.attributes("-alpha",0.96)
-        w,h=870,400
+        w,h=1500,700
         centrar_ventana(self,w,h)
 
     def construir_widget(self):
@@ -31,22 +31,25 @@ class InterfazApp(Tk):
         self.apellidos_texto=Entry(self.cajas_textos,bd=0,width=12,font=("Arial",14))
         self.apellidos_texto.pack()
         #caja para capturar el DNI
-        self.label_celular=Label(self.cajas_textos,text="DNI",bg=COLOR_FONDO_PRIMARIO,fg="white",font=("Roboto",10)).pack(pady=10)
-        self.celular_texto=Entry(self.cajas_textos,bd=0,width=12,font=("Arial",14))
-        self.celular_texto.pack()
+        self.label_dni=Label(self.cajas_textos,text="DNI",bg=COLOR_FONDO_PRIMARIO,fg="white",font=("Roboto",10)).pack(pady=10)
+        self.dni_texto=Entry(self.cajas_textos,bd=0,width=12,font=("Arial",14))
+        self.dni_texto.pack()
         #caja para capturar el nombre
         self.label_dni=Label(self.cajas_textos,text="Fecha de Nacimiento",bg=COLOR_FONDO_PRIMARIO,fg="white",font=("Roboto",10)).pack(pady=10)
-        self.nombre_texto=Entry(self.cajas_textos,bd=0,width=12,font=("Arial",14))
-        self.nombre_texto.pack()
+        self.dni_texto=Entry(self.cajas_textos,bd=0,width=12,font=("Arial",14))
+        self.dni_texto.pack()
         #caja para capturar el nombre
         self.label_f_naci=Label(self.cajas_textos,text="Programa de estudios",bg=COLOR_FONDO_PRIMARIO,fg="white",font=("Roboto",10)).pack(pady=10)
-        self.nombre_texto=Entry(self.cajas_textos,bd=0,width=12,font=("Arial",14))
-        self.nombre_texto.pack()
+        self.f_nacimiento_texto=Entry(self.cajas_textos,bd=0,width=12,font=("Arial",14))
+        self.f_nacimiento_texto.pack()
         #caja para capturar el nombre
-        self.label_nombre=Label(self.cajas_textos,text="Correo Electronico",bg=COLOR_FONDO_PRIMARIO,fg="white",font=("Roboto",10)).pack(pady=10)
-        self.nombre_texto=Entry(self.cajas_textos,bd=0,width=12,font=("Arial",14))
-        self.nombre_texto.pack()
-        
+        self.label_programa=Label(self.cajas_textos,text="Correo Electronico",bg=COLOR_FONDO_PRIMARIO,fg="white",font=("Roboto",10)).pack(pady=10)
+        self.programa_texto=Entry(self.cajas_textos,bd=0,width=12,font=("Arial",14))
+        self.programa_texto.pack()
+        #caja para celular
+        self.label_celular=Label(self.cajas_textos,text="Celular",bg=COLOR_FONDO_PRIMARIO,fg="white",font=("Roboto",10)).pack(pady=10)
+        self.celular_texto=Entry(self.cajas_textos,bd=0,width=12,font=("Arial",14))
+        self.celular_texto.pack()
         
         
         #FIN CAJITA DE TEXTOS
@@ -63,14 +66,18 @@ class InterfazApp(Tk):
         self.cancelar=Button(self.cajas_botones,command=lambda:limpiar(self),text="Cancelar",bg=COLOR_BOTON,fg="White",relief=FLAT,bd=0,width=20,height=2,font=("Arial",10)).pack(pady=10)
         #FIN CAJITA DE BOTONES
         #TABLA DE DATOS
-        self.caja_datos=LabelFrame(self,text="Caja de Datos",width=600,height=360,bg=COLOR_FONDO_PRIMARIO,fg="white",font=("arial",12),relief=FLAT,pady=60)
+        self.caja_datos=LabelFrame(self,text="Caja de Datos",width=1000,height=360,bg=COLOR_FONDO_PRIMARIO,fg="white",font=("arial",12),relief=FLAT,pady=60)
         self.caja_datos.grid(row=0,column=2,pady=20,padx=20)
 
         #tabla
-        self.tabla_datos=ttk.Treeview(self.caja_datos,columns=("#1","#2"))
+        self.tabla_datos=ttk.Treeview(self.caja_datos,columns=("#0","#1","#2","#3","#4","#5","#6"))
         self.tabla_datos.column("#0",width=40)
         self.tabla_datos.column("#1",width=120)
         self.tabla_datos.column("#2",width=40)
+        self.tabla_datos.column("#3",width=150)
+        self.tabla_datos.column("#4",width=150)
+        self.tabla_datos.column("#5",width=140)
+        self.tabla_datos.column("#6",width=40)
         
         self.tabla_datos.heading("#0",text="Nombres")
         self.tabla_datos.heading("#1",text="Apellidos")
@@ -78,10 +85,11 @@ class InterfazApp(Tk):
         self.tabla_datos.heading("#3",text="Fecha de Nacimiento")
         self.tabla_datos.heading("#4",text="Programa de Estudios")
         self.tabla_datos.heading("#5",text="Correo Electronico")
+        self.tabla_datos.heading("#6",text="Celular")
         
         
         
-        alumnitos=mostrar()
+        alumnitos=db.mostrar('Estudiantes')
         for id,nom,ape,cel in alumnitos:
             self.tabla_datos.insert("",END,text=nom,values=(ape,cel))
         print(alumnitos)
